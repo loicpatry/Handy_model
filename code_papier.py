@@ -85,28 +85,17 @@ for i in range(0,nombre_de_tirage):
   
 
 
-commoners_big_fig1=commoners_big
-
-nature_big_fig1=nature_big
-
-ressources_big_fig1=ressources_big
-
-ressources_variance=np.var(ressources_big,axis=1)
-commoners_variance=np.var(commoners_big,axis=1)
-nature_variance=np.var(nature_big,axis=1)
-
+Commoners_moyennes_fig1=np.mean(commoners_big,axis=1)
+Commoners_variance_fig1=np.var(commoners_big,axis=1)
+Nature_moyennes_fig1=np.mean(nature_big,axis=1)
+Nature_variance_fig1=np.var(nature_big,axis=1)
+Ressources_moyennes_fig1=np.mean(ressources_big,axis=1)
+Ressources_variance_fig1=np.var(ressources_big,axis=1)
 
   
 
 
 
-
-plt.figure()
-ax[0,0].errorbar(t,commoners_big, yerr=commoners_variance, ecolor='lightskyblue',color='blue')
-ax[0,0].errorbar(t,nature_big, yerr=nature_variance, ecolor='lawngreen',color='green')
-ax[0,0].errorbar(t,ressources_big, yerr=ressources_variance, ecolor='grey',color='black')
-ax[0,0].plot(line_x,line_y,color='red',linewidth=0.7)
-ax[0,0].set_title(r'$\delta=\delta_{opt*}$')
 
 
 
@@ -184,25 +173,15 @@ for i in range(nombre_de_tirage):
 
 
 
-commoners_big_fig2=commoners_big
 
-   
-nature_big_fig2=nature_big
+Commoners_moyennes_fig2=np.mean(commoners_big,axis=1)
+Commoners_variance_fig2=np.var(commoners_big,axis=1)
+Nature_moyennes_fig2=np.mean(nature_big,axis=1)
+Nature_variance_fig2=np.var(nature_big,axis=1)
+Ressources_moyennes_fig2=np.mean(ressources_big,axis=1)
+Ressources_variance_fig2=np.var(ressources_big,axis=1)
 
-ressources_big_fig2=ressources_big
-ressources_variance=np.var(ressources_big,axis=1)
-commoners_variance=np.var(commoners_big,axis=1)
-nature_variance=np.var(nature_big,axis=1)
 
-   
-plt.figure()
-ax[0,1].errorbar(t,commoners_big, yerr=commoners_variance, ecolor='lightskyblue',color='blue')
-ax[0,1].errorbar(t,nature_big, yerr=nature_variance, ecolor='lawngreen',color='green')
-ax[0,1].errorbar(t,ressources_big, yerr=ressources_variance, ecolor='grey',color='black')
-ax[0,1].plot(line_x,line_y,color='red',linewidth=0.7)
-
-ax[0,1].legend(['carrying capacity','humans', 'nature', 'wealth'], shadow=True)
-ax[0,1].set_title(r'$\delta=2.5*\delta_{opt*}$')
 
 
 
@@ -280,21 +259,12 @@ for i in range(nombre_de_tirage):
   
 
 
-commoners_big_fig3=commoners_big
-
-nature_big_fig3=nature_big
-
-ressources_big_fig3=ressources_big
-ressources_variance=np.var(ressources_big,axis=1)
-commoners_variance=np.var(commoners_big,axis=1)
-nature_variance=np.var(nature_big,axis=1)
-
-plt.figure()
-ax[1,0].errorbar(t,commoners_big, yerr=commoners_variance, ecolor='lightskyblue',color='blue')
-ax[1,0].errorbar(t,nature_big, yerr=nature_variance, ecolor='lawngreen',color='green')
-ax[1,0].errorbar(t,ressources_big, yerr=ressources_variance, ecolor='grey',color='black')
-ax[1,0].plot(line_x,line_y,color='red',linewidth=0.7)
-ax[1,0].set_title(r'$\delta=4*\delta_{opt*}$')
+Commoners_moyennes_fig3=np.mean(commoners_big,axis=1)
+Commoners_variance_fig3=np.var(commoners_big,axis=1)
+Nature_moyennes_fig3=np.mean(nature_big,axis=1)
+Nature_variance_fig3=np.var(nature_big,axis=1)
+Ressources_moyennes_fig3=np.mean(ressources_big,axis=1)
+Ressources_variance_fig3=np.var(ressources_big,axis=1)
 
   
 
@@ -370,32 +340,64 @@ for i in range(nombre_de_tirage):
         commoners_big[n+1,i]=x[n+1]/(2*X_m)
         nature_big[n+1,i]=y[n+1]/Lambda
         ressources_big[n+1,i]=w[n+1]/(20*Lambda)
+    c=c+1
+
+Commoners_moyennes_fig4=np.mean(commoners_big,axis=1)
+Commoners_variance_fig4=np.var(commoners_big,axis=1)
+Nature_moyennes_fig4=np.mean(nature_big,axis=1)
+Nature_variance_fig4=np.var(nature_big,axis=1)
+Ressources_moyennes_fig4=np.mean(ressources_big,axis=1)
+Ressources_variance_fig4=np.var(ressources_big,axis=1)
 
  
  
+fig, ax= plt.subplots(nrows=2,ncols=2,figsize=(12,7))
+fig.suptitle('SOCIETE EQUITABLE EULER, dt = 0.1, bruit commoners, epsilon = 0.01, nombre de tirage = 1000')
 
-commoners_big_fig4=commoners_big
+delta=np.float32(delta_opt)
+X=np.float32((gamma/delta)*(Lambda-n*(s/delta))) #Carrying capacity
+line_x=[0,Nombre_annee]
+line_y=[X/(2*X_m),X/(2*X_m)] #Carrying capacity line
 
-nature_big_fig4=nature_big
+t=np.linspace(0,Nombre_annee,N+1,dtype='float32')
+ax[0,0].errorbar(t,Commoners_moyennes_fig1, yerr=Commoners_variance_fig1, ecolor='lightskyblue',color='blue')
+ax[0,0].errorbar(t,Nature_moyennes_fig1, yerr=Nature_variance_fig1, ecolor='lawngreen',color='green')
+ax[0,0].errorbar(t,Ressources_moyennes_fig1, yerr=Ressources_variance_fig1, ecolor='grey',color='black')
+ax[0,0].plot(line_x,line_y,color='red',linewidth=0.7)
+ax[0,0].set_title(r'$\delta=\delta_{opt*}$')
 
-ressources_big_fig4=ressources_big
+delta=np.float32(2.5*delta_opt)
+X=np.float32((gamma/delta)*(Lambda-n*(s/delta))) #Carrying capacity
+line_x=[0,Nombre_annee]
+line_y=[X/(2*X_m),X/(2*X_m)] #Carrying capacity line
 
-ressources_variance=np.var(ressources_big,axis=1)
-commoners_variance=np.var(commoners_big,axis=1)
-nature_variance=np.var(nature_big,axis=1)
-    
+ax[0,1].errorbar(t,Commoners_moyennes_fig2, yerr=Commoners_variance_fig2, ecolor='lightskyblue',color='blue')
+ax[0,1].errorbar(t,Nature_moyennes_fig2, yerr=Nature_variance_fig2, ecolor='lawngreen',color='green')
+ax[0,1].errorbar(t,Ressources_moyennes_fig2, yerr=Ressources_variance_fig2, ecolor='grey',color='black')
+ax[0,1].plot(line_x,line_y,color='red',linewidth=0.7)
+ax[0,1].legend(['carrying capacity','humans', 'nature', 'wealth'], shadow=True)
+ax[0,1].set_title(r'$\delta=2.5*\delta_{opt*}$')
 
+delta=np.float32(4*delta_opt)
+X=np.float32((gamma/delta)*(Lambda-n*(s/delta))) #Carrying capacity
+line_x=[0,Nombre_annee]
+line_y=[X/(2*X_m),X/(2*X_m)] #Carrying capacity line
 
+ax[1,0].errorbar(t,Commoners_moyennes_fig3, yerr=Commoners_variance_fig3, ecolor='lightskyblue',color='blue')
+ax[1,0].errorbar(t,Nature_moyennes_fig3, yerr=Nature_variance_fig3, ecolor='lawngreen',color='green')
+ax[1,0].errorbar(t,Ressources_moyennes_fig3, yerr=Ressources_variance_fig3, ecolor='grey',color='black')
+ax[1,0].plot(line_x,line_y,color='red',linewidth=0.7)
+ax[1,0].set_title(r'$\delta=4*\delta_{opt*}$')
 
-    
-plt.figure()
-ax[1,1].errorbar(t,commoners_big, yerr=commoners_variance, ecolor='lightskyblue',color='blue')
-ax[1,1].errorbar(t,nature_big, yerr=nature_variance, ecolor='lawngreen',color='green')
-ax[1,1].errorbar(t,ressources_big, yerr=ressources_variance, ecolor='grey',color='black')
+delta=np.float32(5.5*delta_opt)
+X=np.float32((gamma/delta)*(Lambda-n*(s/delta))) #Carrying capacity
+line_x=[0,Nombre_annee]
+line_y=[X/(2*X_m),X/(2*X_m)] #Carrying capacity line
+
+ax[1,1].errorbar(t,Commoners_moyennes_fig4, yerr=Commoners_variance_fig4, ecolor='lightskyblue',color='blue')
+ax[1,1].errorbar(t,Nature_moyennes_fig4, yerr=Nature_variance_fig4, ecolor='lawngreen',color='green')
+ax[1,1].errorbar(t,Ressources_moyennes_fig4, yerr=Ressources_variance_fig4, ecolor='grey',color='black')
 ax[1,1].plot(line_x,line_y,color='red',linewidth=0.7)
-
-
 ax[1,1].set_title(r'$\delta=5.5*\delta_{opt*}$')
 
-    
 
