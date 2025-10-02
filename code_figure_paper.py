@@ -18,7 +18,7 @@ from matplotlib import cm
 
 # -------------------- HDF5 I/O helpers --------------------
 
-H5_PATH = "Handy_donnees"  # unchanged input file name
+H5_PATH = "Handy_donnees_full"  # unchanged input file name
 
 def open_sources(h5_path=H5_PATH):
     f = h5.File(h5_path, "r")
@@ -92,13 +92,13 @@ def find_eps_index(target):
     # find exact match first, then nearest
     arr = np.asarray(EPSILON)
     try:
-        return EPSILON.index(float(target))
+        return np.where(arr == float(target))[0][0]
     except ValueError:
         return int(np.argmin(np.abs(arr - float(target))))
 
 # Which epsilons we want figures for (to reproduce original outputs)
-EPS_CHOICES = [0.01, 0.03, 0.10]
-EPS_IDX = [find_eps_index(v) for v in EPS_CHOICES]
+EPSILON = [0.03,0.1]
+EPS_IDX = [find_eps_index(v) for v in EPSILON]
 
 # Delta multipliers, matching fig1..fig4 ordering in the file
 DELTA_MULTS = [1.0, 2.5, 4.0, 5.5]
@@ -197,13 +197,13 @@ def main():
     # Collapse arrays
     c1, c2, c3, c4 = load_collapse(g_collapse)
     normalize_collapse_inplace([c1, c2, c3, c4], denom=1000.0)
-
+    EPSILON1= np.arange(0,0.4,0.01)
     # Produce summary collapse figures (vs epsilon at final time)
     fig, ax = plt.subplots(nrows=2, ncols=2, figsize=(12,7))
-    ax[0,0].plot(EPSILON, c1[:, -1]); ax[0,0].set_ylim(0,1)
-    ax[0,1].plot(EPSILON, c2[:, -1]); ax[0,1].set_ylim(0,1)
-    ax[1,0].plot(EPSILON, c3[:, -1]); ax[1,0].set_ylim(0,1)
-    ax[1,1].plot(EPSILON, c4[:, -1]); ax[1,1].set_ylim(0,1)
+    ax[0,0].plot(EPSILON1, c1[:, -1]); ax[0,0].set_ylim(0,1)
+    ax[0,1].plot(EPSILON1, c2[:, -1]); ax[0,1].set_ylim(0,1)
+    ax[1,0].plot(EPSILON1, c3[:, -1]); ax[1,0].set_ylim(0,1)
+    ax[1,1].plot(EPSILON1, c4[:, -1]); ax[1,1].set_ylim(0,1)
     plt.savefig('handacks/collapse_rate/epsilon/collapse_rate_epsilon.pdf', format='pdf')
     plt.close()
 
@@ -259,7 +259,7 @@ def main():
     # Optional: 3D surfaces (unchanged, but now using normalized collapse arrays)
     for carr, title in zip([c1,c2,c3,c4], ['delta_opt','2.5*delta_opt','4*delta_opt','5.5*delta_opt']):
         fig, ax = plt.subplots(subplot_kw={"projection":"3d"})
-        X, Y = np.meshgrid(t, EPSILON)
+        X, Y = np.meshgrid(t, EPSILON1)
         ax.plot_surface(X, Y, carr, cmap=cm.coolwarm)
         ax.set_xlabel('time'); ax.set_ylabel('epsilon'); ax.set_zlabel('collapse_rate')
         ax.set_title(title)
